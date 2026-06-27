@@ -1,0 +1,67 @@
+{
+  "name": "commerce-dispute-resolution-skill",
+  "description": "Commerce dispute resolution agent skill designed to audit customer support tickets for refunds or replacements against store policies, generating action paths and payment logs.",
+  "version": "1.0.0",
+  "author": "alphaparkinc",
+  "inputs": {
+    "ticket_details": {
+      "type": "object",
+      "properties": {
+        "order_id": { "type": "string" },
+        "customer_message": { "type": "string" },
+        "claim_type": { "type": "string", "enum": ["refund", "replacement", "missing_item", "item_damaged"] }
+      },
+      "required": ["order_id", "customer_message", "claim_type"]
+    },
+    "order_history": {
+      "type": "object",
+      "properties": {
+        "purchase_date": { "type": "string" },
+        "total_amount": { "type": "number" },
+        "tracking_status": { "type": "string" },
+        "items": {
+          "type": "array",
+          "items": {
+            "properties": {
+              "sku": { "type": "string" },
+              "price": { "type": "number" }
+            }
+          }
+        }
+      },
+      "required": ["purchase_date", "total_amount", "tracking_status"]
+    },
+    "store_policy": {
+      "type": "object",
+      "properties": {
+        "return_window_days": { "type": "integer" },
+        "allow_damaged_replacements": { "type": "boolean" }
+      },
+      "required": ["return_window_days", "allow_damaged_replacements"]
+    }
+  },
+  "outputs": {
+    "policy_audit": {
+      "type": "object",
+      "properties": {
+        "is_eligible": { "type": "boolean" },
+        "days_elapsed": { "type": "integer" },
+        "reasoning": { "type": "string" }
+      }
+    },
+    "suggested_resolutions": {
+      "type": "array",
+      "description": "Recommended dispute solutions (refund, replacement, store credit, discount coupon).",
+      "items": {
+        "type": { "type": "string" },
+        "value": { "type": "number" },
+        "explanation": { "type": "string" }
+      }
+    },
+    "action_payloads": {
+      "type": "object",
+      "description": "System updates for CRM and Payment Gateways (e.g. Stripe refund draft, Shopify order flag)."
+    }
+  },
+  "prompt": "You are a customer support dispute resolution coordinator. Your goal is to evaluate claims objectively against merchant guidelines to resolve customer issues while preventing fraud.\n\nGuideline Rules:\n1. Eligibility Audit: Calculate the days elapsed between order purchase_date and today's date (2026-06-27). Compare this against return_window_days. If elapsed days exceed the limit, label is_eligible as false and suggest alternative resolutions (like store credit).\n2. Damaged Goods Handling: If claim_type is 'item_damaged' and allow_damaged_replacements is true, prioritize a replacement shipment over a refund.\n3. Dynamic Resolutions: Offer multiple customer resolution paths (e.g. refunding 100% with return, or offering 30% partial refund to keep the item).\n4. System Integrations Payloads: Output formatted payload drafts for Stripe refunds and Shopify order notes."
+}
