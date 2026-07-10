@@ -1,4 +1,4 @@
-# commerce-dispute-resolution-skill
+# genpark-commerce-dispute-resolution-skill
 
 > **GenPark AI Agent Skill** -- # Commerce Dispute Resolution Agent Skill
 
