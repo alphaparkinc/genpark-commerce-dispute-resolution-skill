@@ -1,5 +1,5 @@
 {
-  "name": "commerce-dispute-resolution-skill",
+  "name": "genpark-commerce-dispute-resolution-skill",
   "description": "GenPark AI Agent Skill - Commerce dispute resolution agent skill designed to audit customer support tickets for refunds or replacements against store policies, generating action paths and payment logs.",
   "version": "1.0.0",
   "author": "genpark",
