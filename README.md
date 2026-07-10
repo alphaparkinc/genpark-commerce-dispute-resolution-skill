@@ -1,4 +1,6 @@
-# Commerce Dispute Resolution Agent Skill
+# commerce-dispute-resolution-skill
+
+> **GenPark AI Agent Skill** -- # Commerce Dispute Resolution Agent Skill
 
 This repository contains the **Commerce Dispute Resolution Agent Skill** — an agent skill interface configuration (`skill.json`), developer SDK client (`dispute_resolver.py`), and validation scripts. It is designed to automate return/refund audits against merchant policies, suggest partial/full resolution options, and generate Stripe API payloads.
 
